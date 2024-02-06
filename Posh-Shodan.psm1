@@ -53,7 +53,7 @@ function Set-ShodanAPIKey
         
         Write-Verbose -Message "Saving the information to configuration file $("$($env:AppData)\$FolderName\$ConfigName")"
         "$($EncryptedString)"  | Set-Content  "$($env:AppData)\$FolderName\$ConfigName" -Force
-        Set-Content -Value $SaltBytes -Encoding Byte -Path "$($env:AppData)\$FolderName\$saltname" -Force
+        Set-Content -Value $SaltBytes -AsByteStream -Path "$($env:AppData)\$FolderName\$saltname" -Force
     }
     End
     {}
@@ -87,7 +87,7 @@ function Read-ShodanAPIKey
         $ConfigFileContent = Get-Content -Path "$($env:AppData)\Posh-Shodan\api.key"
         Write-Debug -Message "Secure string is $($ConfigFileContent)"
 
-        $SaltBytes = Get-Content -Encoding Byte -Path "$($env:AppData)\Posh-Shodan\salt.rnd" 
+        $SaltBytes = Get-Content -AsByteStream -Path "$($env:AppData)\Posh-Shodan\salt.rnd" 
         $Credentials = New-Object System.Management.Automation.PSCredential -ArgumentList 'user', $MasterPassword
 
         # Derive Key, IV and Salt from Key
